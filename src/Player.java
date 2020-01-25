@@ -49,10 +49,10 @@ public class Player extends GameObject {
         if (alive) {
             screen.noStroke();
             screen.fill(color);
-            screen.ellipse(getXOnScreen(), getYOnScreen(), diameter, diameter);
+            screen.ellipse(getXOnScreen(), getYOnScreen(), getDiameter(), getDiameter());
 
             screen.fill(0);
-            screen.text(name, getXOnScreen() - diameter / 4, getYOnScreen());
+            screen.text(name, getXOnScreen() - getDiameter() / 4, getYOnScreen());
 
         } else {
             screen.text("dead", getXOnScreen(), getYOnScreen());
@@ -62,7 +62,7 @@ public class Player extends GameObject {
 
     public void displayScore() {
         screen.fill(0);
-        screen.text((int) diameter, 10, 20);
+        screen.text((int) score, 10, 20);
     }
 
     public void followMouse(float x, float y) {

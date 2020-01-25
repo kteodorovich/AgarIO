@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.io.IOException;
 
 import processing.core.PApplet;
@@ -9,8 +10,8 @@ public class AgarIO extends PApplet {
     private ServerConnection connection;
 
     public void setup() {
-        size(1920, 950);
-
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        size(screenSize.width, screenSize.height);
 
         try {
             chooseServerOrClient();

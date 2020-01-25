@@ -24,8 +24,7 @@ public class Grid {
 
     public void draw() {
         screen.stroke(screen.color(200, 200, 200));
-
-        for (int i = 0; i < FULL_GRID_WIDTH; i += getSquareSize()) {
+        for (int i = 0; i <= FULL_GRID_WIDTH; i += getSquareSize()) {
             // horizontal
             screen.line(getLeft(), i - screenY, getRight(), i - screenY);
 
@@ -99,6 +98,6 @@ public class Grid {
      * @return width of entire map
      */
     public double getFullFieldWidth() {
-        return FULL_GRID_WIDTH;
+        return FULL_GRID_WIDTH - FULL_GRID_WIDTH % squareSize;
     }
 }
