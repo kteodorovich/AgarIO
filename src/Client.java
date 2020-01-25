@@ -4,7 +4,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class Client implements ServerConnection{
+public class Client implements ServerConnection {
     private static final String DEFAULT_SERVER_IP = "127.0.0.1";
     private static final int SERVER_PORT = 9090;
 
@@ -14,8 +14,11 @@ public class Client implements ServerConnection{
     private PrintWriter out;
 
     public Client() throws IOException {
-//        serverIp = JOptionPane.showInputDialog("Server IP:");
-        serverIp = DEFAULT_SERVER_IP;
+        this(DEFAULT_SERVER_IP);
+    }
+
+    public Client(String ip) throws IOException {
+        serverIp = ip;
 
         socket = new Socket(serverIp, SERVER_PORT);
         input = new BufferedReader(new InputStreamReader(socket.getInputStream()));

@@ -78,7 +78,7 @@ public class Player extends GameObject {
 
     private void restrictToBounds() {
         absX = MathStuff.restrictToRange(absX, getDiameter() / 2, (float) grid.getFullFieldWidth() - getDiameter() / 2);
-        absY = MathStuff.restrictToRange(absY, 0, (float) grid.getFullFieldWidth());
+        absY = MathStuff.restrictToRange(absY, getDiameter() / 2, (float) grid.getFullFieldWidth() - getDiameter() / 2);
 
     }
 

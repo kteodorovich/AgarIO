@@ -95,6 +95,9 @@ public class Grid {
         return squareSize;
     }
 
+    /**
+     * @return width of entire map
+     */
     public double getFullFieldWidth() {
         return FULL_GRID_WIDTH;
     }

@@ -2,25 +2,38 @@ import java.io.IOException;
 
 import processing.core.PApplet;
 
+import javax.swing.*;
+
 public class AgarIO extends PApplet {
     private Game game;
-    private ServerConnection server;
+    private ServerConnection connection;
 
     public void setup() {
         size(1920, 950);
 
         game = new Game(this);
 
-        try {
-            server = new Server();
-        } catch (IOException e) {
-            System.out.println("SERVER already exists, making CLIENT");
 
-            try {
-                server = new Client();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+        try {
+            chooseServerOrClient();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void chooseServerOrClient() throws IOException {
+        String[] options = new String[]{"Server", "Client"};
+        int response = JOptionPane.showOptionDialog(null, "Which game would you like?", "AgarIO",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                null, options, options[0]);
+
+        if (response == 0) {
+            connection = new Server();
+        } else {
+            String ip = JOptionPane.showInputDialog("IP:");
+            connection = new Client(ip);
         }
 
     }
@@ -28,8 +41,8 @@ public class AgarIO extends PApplet {
     public void draw() {
 
         try {
-            server.sendData(game.getLocalPlayerData());
-            game.updateRemotePlayer(server.readData());
+            connection.sendData(game.getLocalPlayerData());
+            game.updateRemotePlayer(connection.readData());
 
         } catch (IOException e) {
             e.printStackTrace();
