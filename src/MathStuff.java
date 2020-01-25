@@ -1,4 +1,4 @@
-public abstract class MathStuff {
+public class MathStuff {
     public static float restrictToRange(float x, float min, float max) {
         if (x < min) x = min;
         if (x > max) x = max;

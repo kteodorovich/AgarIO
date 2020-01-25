@@ -11,8 +11,6 @@ public class AgarIO extends PApplet {
     public void setup() {
         size(1920, 950);
 
-        game = new Game(this);
-
 
         try {
             chooseServerOrClient();
@@ -21,6 +19,7 @@ public class AgarIO extends PApplet {
             e.printStackTrace();
         }
 
+        game = new Game(this);
     }
 
     private void chooseServerOrClient() throws IOException {
