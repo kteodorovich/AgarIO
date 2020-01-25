@@ -4,15 +4,12 @@ import processing.core.PApplet;
 
 public class Grid {
     private static final float FULL_GRID_WIDTH = 3200;
-    private static final int NUM_FOODS = 250;
-    private static final float INITIAL_SQUARE_SIZE = 60;
-    private static final float SCALE_FACTOR = 0.99f;
+    private static final float INITIAL_SQUARE_SIZE = 50;
 
     private PApplet screen;
     private float squareSize;
     private float screenX, screenY;
 
-    private ArrayList<Food> foods;
     private float speed;
 
     public Grid(PApplet w) {
@@ -22,16 +19,6 @@ public class Grid {
         this.screenX = 600;
         this.screenY = 600;
         this.speed = 3;
-
-        foods = new ArrayList<>();
-
-        for (int i = 0; i < NUM_FOODS; i++) {
-            float randomX = (float) (Math.random() * FULL_GRID_WIDTH);
-            float randomY = (float) (Math.random() * FULL_GRID_WIDTH);
-
-            foods.add(new Food(screen, randomX, randomY));
-
-        }
 
     }
 
@@ -47,9 +34,6 @@ public class Grid {
 
         }
 
-        for (Food f : foods) {
-            f.draw(f.getX() - screenX, f.getY() - screenY);
-        }
     }
 
     public void follow(float x, float y) {
@@ -82,26 +66,6 @@ public class Grid {
     }
 
 
-
-    public void eatAndReplace(int i) {
-        foods.remove(i);
-        float randomX = (float) (Math.random() * FULL_GRID_WIDTH);
-        float randomY = (float) (Math.random() * FULL_GRID_WIDTH);
-
-        foods.add(new Food(screen, randomX, randomY));
-
-    }
-
-    public void decreaseSpeed() {
-        speed *= SCALE_FACTOR;
-    }
-
-    // getters
-
-    public Food getFood(int i) {
-        return foods.get(i);
-    }
-
     public float getLeft() {
         return -screenX;
     }
@@ -118,10 +82,6 @@ public class Grid {
         return FULL_GRID_WIDTH - screenY;
     }
 
-    public int foodNum() {
-        return foods.size();
-    }
-
     public float getScreenX() {
         return screenX;
     }
@@ -135,4 +95,7 @@ public class Grid {
         return squareSize;
     }
 
+    public double getFullFieldWidth() {
+        return FULL_GRID_WIDTH;
+    }
 }

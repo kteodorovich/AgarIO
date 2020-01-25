@@ -2,37 +2,33 @@ import processing.core.PApplet;
 
 import javax.swing.*;
 
-public class Player extends GameObject{
+public class Player extends GameObject {
     private static final float DEFAULT_START_SIZE = 120;
     private static final float DEFAULT_START_SPEED = 0.1f;
     private static final String SEPARATOR = "Ѭ";
 
     private float speed;
-    private float size;
+    private float diameter;
     private int color;
-    private Grid grid;
-    private int counter;
+    private int score;
     private boolean alive;
     private String name;
 
     public Player(PApplet w, Grid g, boolean askForName) {
-        super(w, w.width / 2f, w.height / 2f);
+        super(w, g, w.width / 2f, w.height / 2f);
 
-        this.grid = g;
-
-        this.size = DEFAULT_START_SIZE;
+        this.diameter = DEFAULT_START_SIZE;
         this.speed = DEFAULT_START_SPEED;
 
         this.color = randomColor();
-        this.counter = 0;
+        this.score = 0;
         this.alive = true;
 
         if (askForName) {
             askForName();
         } else {
-            this.name = "";
+            name = "";
         }
-
     }
 
 
@@ -43,66 +39,57 @@ public class Player extends GameObject{
 
     private void askForName() {
         this.name = JOptionPane.showInputDialog("Name:");
-        while (name.contains(SEPARATOR)) {
-            name = JOptionPane.showInputDialog("Name without '" + SEPARATOR + "':");
-        }
-    }
 
-    public void draw(boolean displayingScore) {
-        draw();
-        if (displayingScore) displayScore();
+        while (name.contains(SEPARATOR)) {
+            name = JOptionPane.showInputDialog("Cannot use '" + SEPARATOR + "' in name. Try again:");
+        }
     }
 
     public void draw() {
         if (alive) {
             screen.noStroke();
             screen.fill(color);
-            screen.ellipse(x, y, size, size);
+            screen.ellipse(getXOnScreen(), getYOnScreen(), diameter, diameter);
 
             screen.fill(0);
-            screen.text(name, x - size / 4, y);
+            screen.text(name, getXOnScreen() - diameter / 4, getYOnScreen());
 
         } else {
-            screen.text("dead", x, y);
+            screen.text("dead", getXOnScreen(), getYOnScreen());
 
         }
     }
 
-    private void displayScore() {
+    public void displayScore() {
         screen.fill(0);
-        screen.text((int) size, 10, 20);
+        screen.text((int) diameter, 10, 20);
     }
 
     public void followMouse(float x, float y) {
-        float xDist = x - this.x;
-        float yDist = y - this.y;
+        float xDist = x - this.getXOnScreen();
+        float yDist = y - this.getYOnScreen();
 
-        this.x += xDist * speed;
-        this.y += yDist * speed;
+        this.absX += xDist * speed;
+        this.absY += yDist * speed;
 
         restrictToBounds();
 
     }
 
     private void restrictToBounds() {
-        x = MathStuff.restrictToRange(x, grid.getLeft() + size / 2, grid.getRight() - size / 2);
-        y = MathStuff.restrictToRange(y, grid.getTop() + size / 2, grid.getBottom() - size / 2);
+        absX = MathStuff.restrictToRange(absX, getDiameter() / 2, (float) grid.getFullFieldWidth() - getDiameter() / 2);
+        absY = MathStuff.restrictToRange(absY, 0, (float) grid.getFullFieldWidth());
 
     }
 
 
     // check if obj is hitting other obj - both x and y overlap
     public boolean isHitting(Grid g, Food f) {
-        float foodX = f.getX() - g.getScreenX();
-        float foodY = f.getY() - g.getScreenY();
-
-        return MathStuff.getDistance(x, y, foodX, foodY) < size / 2;
+        return MathStuff.getDistance(absX, absY, f.getAbsoluteX(), f.getAbsoluteY()) < diameter / 2;
     }
 
     public boolean isHitting(Player p) {
-        boolean isBigger = this.size > p.getSize();
-
-        return isBigger && MathStuff.getDistance(x, y, p.getX(), p.getY()) < size / 2;
+        return MathStuff.getDistance(absX, absY, p.getAbsoluteX(), p.getAbsoluteY()) < diameter / 2;
     }
 
     public void setAlive(boolean b) {
@@ -110,35 +97,18 @@ public class Player extends GameObject{
     }
 
     public void increaseSize() {
-        size++;
-        counter++;
+        diameter++;
+        score++;
 
-        if (size < 200 && counter > 5 || size >= 200 && counter > 10) {
-            grid.decreaseSpeed();
-            counter = 0;
+        if (diameter < 200 && score > 5 || diameter >= 200 && score > 10) {
+            score = 0;
         }
     }
 
     // getters
 
-    public float getXOnGrid() {
-        return x + grid.getScreenX();
-    }
-
-    public float getYOnGrid() {
-        return y + grid.getScreenY();
-    }
-
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    public float getSize() {
-        return size;
+    public float getDiameter() {
+        return diameter;
     }
 
     public boolean isAlive() {
@@ -159,16 +129,8 @@ public class Player extends GameObject{
         this.name = name;
     }
 
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    public void setY(float y) {
-        this.y = y;
-    }
-
-    public void setSize(float size) {
-        this.size = size;
+    public void setDiameter(float diameter) {
+        this.diameter = diameter;
     }
 
     public void setColor(int color) {
@@ -177,9 +139,9 @@ public class Player extends GameObject{
 
     public String getData() {
         return getName() + SEPARATOR
-                + getXOnGrid() + SEPARATOR
-                + getYOnGrid() + SEPARATOR
-                + getSize() + SEPARATOR
+                + getAbsoluteX() + SEPARATOR
+                + getAbsoluteY() + SEPARATOR
+                + getDiameter() + SEPARATOR
                 + getColor() + SEPARATOR
                 + isAlive();
 
@@ -189,9 +151,9 @@ public class Player extends GameObject{
         String[] p2data = data.split(SEPARATOR);
 
         setName(p2data[0]);
-        setX(Float.parseFloat(p2data[1]) - grid.getScreenX());
-        setY(Float.parseFloat(p2data[2]) - grid.getScreenY());
-        setSize(Float.parseFloat(p2data[3]));
+        setAbsoluteX(Float.parseFloat(p2data[1]));
+        setAbsoluteY(Float.parseFloat(p2data[2]));
+        setDiameter(Float.parseFloat(p2data[3]));
         setColor(Integer.parseInt(p2data[4]));
         setAlive(Boolean.parseBoolean(p2data[5]));
     }

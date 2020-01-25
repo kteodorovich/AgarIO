@@ -5,30 +5,17 @@ public class Food extends GameObject{
 
     private int color;
 
-    public Food(PApplet w, float x, float y) {
-        super(w, x, y);
+    public Food(PApplet w, Grid g, float absX, float absY) {
+        super(w, g, absX, absY);
 
         this.color = randomColor();
     }
 
-    public void draw() {
-        draw(getX(), getY());
-    }
 
-    public void draw(float x, float y) {
+    public void draw() {
         screen.noStroke();
         screen.fill(color);
-        screen.ellipse(x, y, SIZE, SIZE);
-    }
-
-    // getters
-
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
+        screen.ellipse(getXOnScreen(), getYOnScreen(), SIZE, SIZE);
     }
 
 }

@@ -2,15 +2,17 @@ import processing.core.PApplet;
 
 public abstract class GameObject {
     protected PApplet screen;
-    protected float x, y;
+    protected Grid grid;
+    protected float absX, absY;
 
-    public GameObject(PApplet screen, float x, float y) {
+    public GameObject(PApplet screen, Grid g, float absX, float absY) {
         this.screen = screen;
-        this.x = x;
-        this.y = y;
+        this.grid = g;
+        this.absX = absX;
+        this.absY = absY;
     }
 
-    protected int randomColor() {
+    public int randomColor() {
         int r = (int) (Math.random() * 256);
         int g = (int) (Math.random() * 256);
         int b = (int) (Math.random() * 256);
@@ -21,4 +23,28 @@ public abstract class GameObject {
     }
 
     public abstract void draw();
+
+    public float getAbsoluteX() {
+        return absX;
+    }
+
+    public float getXOnScreen() {
+        return absX - grid.getScreenX();
+    }
+
+    public float getAbsoluteY() {
+        return absY;
+    }
+
+    public float getYOnScreen() {
+        return absY - grid.getScreenY();
+    }
+
+    public void setAbsoluteX(float x){
+        absX = x;
+    }
+
+    public void setAbsoluteY(float y) {
+        absY = y;
+    }
 }
