@@ -60,8 +60,8 @@ public class Grid {
     }
 
     private void restrictToBounds() {
-        screenX = MathStuff.restrictToRange(screenX, -100, FULL_GRID_WIDTH - (screen.width - 100));
-        screenY = MathStuff.restrictToRange(screenY, -100, FULL_GRID_WIDTH - 800);
+        screenX = GameObject.restrictToRange(screenX, -100, FULL_GRID_WIDTH - (screen.width - 100));
+        screenY = GameObject.restrictToRange(screenY, -100, FULL_GRID_WIDTH - 800);
     }
 
 

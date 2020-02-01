@@ -77,19 +77,19 @@ public class Player extends GameObject {
     }
 
     private void restrictToBounds() {
-        absX = MathStuff.restrictToRange(absX, getDiameter() / 2, (float) grid.getFullFieldWidth() - getDiameter() / 2);
-        absY = MathStuff.restrictToRange(absY, getDiameter() / 2, (float) grid.getFullFieldWidth() - getDiameter() / 2);
+        absX = GameObject.restrictToRange(absX, getDiameter() / 2, (float) grid.getFullFieldWidth() - getDiameter() / 2);
+        absY = GameObject.restrictToRange(absY, getDiameter() / 2, (float) grid.getFullFieldWidth() - getDiameter() / 2);
 
     }
 
 
     // check if obj is hitting other obj - both x and y overlap
     public boolean isHitting(Grid g, Food f) {
-        return MathStuff.getDistance(absX, absY, f.getAbsoluteX(), f.getAbsoluteY()) < diameter / 2;
+        return GameObject.getDistance(absX, absY, f.getAbsoluteX(), f.getAbsoluteY()) < diameter / 2;
     }
 
     public boolean isHitting(Player p) {
-        return MathStuff.getDistance(absX, absY, p.getAbsoluteX(), p.getAbsoluteY()) < diameter / 2;
+        return GameObject.getDistance(absX, absY, p.getAbsoluteX(), p.getAbsoluteY()) < diameter / 2;
     }
 
     public void setAlive(boolean b) {
